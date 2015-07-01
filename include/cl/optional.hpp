@@ -23,7 +23,7 @@ class optional
 public:
    typedef T value_type;
 
-   optional() noexcept : init_(false) {}
+   optional() /* noexcept */ : init_(false) {}
 
    optional(const optional& rhs)
       : init_(rhs.init_)
@@ -110,7 +110,7 @@ public:
       return reinterpret_cast<T&>(data_);
    }
 
-   explicit operator bool() const noexcept
+   explicit operator bool() const /* noexcept */
    {
       return init_;
    }
@@ -131,6 +131,7 @@ public:
       return **this;
    }
 
+   /*
    template <typename U> T value_or(U&& v) const&
    {
       if (init_)
@@ -146,6 +147,7 @@ public:
 
       return static_cast<T>(std::forward<U>(v));
    }
+   */
 
 private:
    typename std::aligned_storage<sizeof(T), std::alignment_of<T>::value>::type data_;
@@ -184,10 +186,9 @@ template <typename T> optional<typename std::decay<T>::type> make_optional(T&& v
 namespace std
 {
 
-template <typename T> void swap(core::optional<T>& x, core::optional<T>& y)
+template <typename T> void swap(cl::optional<T>& x, cl::optional<T>& y)
 {
    x.swap(y);
 }
 
 } // namespace std
-
